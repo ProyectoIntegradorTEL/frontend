@@ -1,20 +1,15 @@
-import { Typography } from '@material-tailwind/react'
+import { Routes, Route } from "react-router-dom";
+import { DashboardLayout, AuthLayout, HomepageLayout } from "./layouts";
+
 
 function App() {
 
   return (
-    <>
-      
-      <Typography> Prueba de Tailwind</Typography>
-
-      <div className= "flex flex-row justify-center">
-      <Typography> Prueba de tailwind 2, uso de clases</Typography>
-
-      </div>
-
-
-
-    </>
+    <Routes>
+      <Route path="/dashboard/*" element={<DashboardLayout />} />
+      <Route path="/auth/*" element={<AuthLayout />} />
+      <Route path="/*" element={<HomepageLayout />} />
+    </Routes>
   )
 }
 
