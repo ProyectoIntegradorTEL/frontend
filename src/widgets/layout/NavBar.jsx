@@ -59,7 +59,7 @@ export function NavbarSimple() {
     }, []);
 
     return (
-        <Navbar className="mx-auto max-w-screen-xl px-6 py-3">
+        <Navbar className="mx-auto py-3">
             <div className="flex items-center justify-between text-blue-gray-900">
                 <Typography
                     as="a"
