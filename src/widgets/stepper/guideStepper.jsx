@@ -19,7 +19,7 @@ export function StepperWithContent({ activeStep, setActiveStep, setIsLastStep, s
                 isLastStep={(value) => setIsLastStep(value)}
                 isFirstStep={(value) => setIsFirstStep(value)}
             >
-                <Step onClick={() => setActiveStep(0)}>
+                <Step>
                     <BeakerIcon className="h-5 w-5" />
                     <div className="absolute -bottom-[4.5rem] w-max text-center">
                         <Typography
@@ -36,7 +36,7 @@ export function StepperWithContent({ activeStep, setActiveStep, setIsLastStep, s
                         </Typography>
                     </div>
                 </Step>
-                <Step onClick={() => setActiveStep(1)}>
+                <Step>
                     <UserIcon className="h-5 w-5" />
                     <div className="absolute -bottom-[4.5rem] w-max text-center">
                         <Typography
@@ -53,7 +53,7 @@ export function StepperWithContent({ activeStep, setActiveStep, setIsLastStep, s
                         </Typography>
                     </div>
                 </Step>
-                <Step onClick={() => setActiveStep(2)}>
+                <Step>
                     <AdjustmentsHorizontalIcon className="h-5 w-5" />
                     <div className="absolute -bottom-[4.5rem] w-max text-center">
                         <Typography

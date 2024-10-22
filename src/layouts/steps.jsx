@@ -1,6 +1,6 @@
+import routes from "../routes"
 import { Route, Routes } from "react-router-dom"
 import { NavbarSimple } from "../widgets/layout"
-import routes from "../routes"
 import { StepperWithContent } from "../widgets/stepper"
 import { useState } from "react"
 import { Button } from "@material-tailwind/react"
@@ -41,7 +41,7 @@ export function StepsLayout() {
     return (
         <div className="max-w-screen h-screen flex flex-col items-center">
             <NavbarSimple />
-            <div className="w-4/5 py-4">
+            <div className="w-4/5 py-4 my-4">
                 <StepperWithContent activeStep={activeStep} setActiveStep={setActiveStep} setIsFirstStep={setIsFirstStep} setIsLastStep={setIsLastStep} />
             </div>
 
@@ -54,7 +54,7 @@ export function StepsLayout() {
                         ))
                 )}
             </Routes>
-            <div className="w-4/5 py-8 my-8 flex justify-between items-center">
+            <div className="w-4/5 py-8 my-16 flex  flex-row justify-between items-center">
                 <Button
                     onClick={handlePrev}
                     // disabled={isFirstStep}
