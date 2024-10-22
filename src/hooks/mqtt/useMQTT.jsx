@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import mqtt from "mqtt";
 
-export const useMQTT = (topic ) => {
+export const useMQTT = (topic) => {
 
   const [client, setClient] = useState(null);
   const [messages, setMessages] = useState([]);

@@ -16,8 +16,14 @@ export function Report() {
   const [processedData, setProcessedData] = useState(null);
   const [plotData, setPlotData] = useState(null);
 
-  const topic = "medition/Device082621";
-  const { client, messages, publishMessage, setMessages } = useMQTT(topic);
+  const topicReceiver = "sender/Device082621";
+
+  
+  const topicTrigger = "trigger/Device082621";
+
+  const { client, messages, setMessages } = useMQTT(topicReceiver);
+
+  const {client: trigger, publishMessage: triggerPublishMessage, } = useMQTT(topicTrigger);
 
   useEffect(() => {
     // Verificar si el último mensaje es "finished"
@@ -98,7 +104,12 @@ export function Report() {
           <Button
             size="sm"
             className="mr-40"
-            onClick={() => publishMessage("start")}
+            onClick={() => {
+              
+              triggerPublishMessage("start")
+              console.log("Mensaje enviado: start");
+            }
+          }
           >
             Iniciar prueba
           </Button>
