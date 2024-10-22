@@ -53,16 +53,17 @@ export const routes = [
                     </div>,
             },
             {
+                name: "guide",
+                path: "/guideSteps",
+                element: <GuideSteps />,
+            },
+            {
                 name: "form",
                 path: "/form",
                 element:
                     <PatientForm />,
             },
-            {
-                name: "guide",
-                path: "/guideSteps",
-                element: <GuideSteps />,
-            }
+
         ],
     }
 ];

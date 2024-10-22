@@ -11,12 +11,15 @@ import {
     Option,
 } from "@material-tailwind/react";
 import { Link, useNavigate, } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { project_pic } from "../../data";
 import { DateInputLabel, TextInputLabel } from "../../widgets/textInputs";
+import { TrialContext } from "../../context";
 
 
 export function PatientForm() {
+    // Context
+    const { setUser } = useContext(TrialContext);
 
     //React hoooks
     const navigate = useNavigate();
@@ -39,15 +42,25 @@ export function PatientForm() {
 
     // Company States
 
-    const userData = {
-        personalId,
-        firstName,
-        lastName,
-        gender,
-        birthDate,
-        email,
-        phone,
-    };
+
+
+    useEffect(() => {
+        const userData = {
+            personalId,
+            firstName,
+            lastName,
+            gender,
+            birthDate,
+            email,
+            phone,
+            isOn,
+            isNewPatient,
+        };
+        setUser(userData);
+    }, [setUser, personalId, firstName, lastName, gender, birthDate, email, phone, isOn, isNewPatient]);
+
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -55,8 +68,8 @@ export function PatientForm() {
 
 
     return (
-        <section className={`w-full h-full ${isNewPatient ? "mt-52 mb-32" : ""} flex flex-row py-16 px-8 `}>
-            <div className="w-2/5 h-full hidden lg:block">
+        <section className={`w-full h-full ${isNewPatient ? "mt-52 mb-32" : ""} flex flex-row py-8 px-8 `}>
+            <div className="w-2/5 h-screen hidden lg:block lg:ml-24">
                 <img
                     src={project_pic}
                     className="h-full w-full object-cover rounded-3xl"
@@ -82,10 +95,10 @@ export function PatientForm() {
                         <Tabs value={isNewPatient ? "New" : "Old"}>
                             <TabsHeader>
                                 <Tab key={"New"} value={"New"} onClick={() => setIsNewPatient(true)}>
-                                    New
+                                    New patient
                                 </Tab>
                                 <Tab key={"Old"} value={"Old"} onClick={() => setIsNewPatient(false)}>
-                                    Old
+                                    Registered patient
                                 </Tab>
                             </TabsHeader>
                         </Tabs>
@@ -191,14 +204,14 @@ export function PatientForm() {
                         }
                         containerProps={{ className: "-ml-2.5" }}
                     />
-                    <Button
+                    {/* <Button
                         className="mt-6"
                         fullWidth
                         color="blue"
                         type="submit"
                     >
                         Complete
-                    </Button>
+                    </Button> */}
                     {error && (
                         <Typography variant="small" color="red" className="mt-2">
                             {error}

@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Stepper, Step, Button, Typography } from "@material-tailwind/react";
 import {
     BeakerIcon,
-    CogIcon,
     UserIcon,
     AdjustmentsHorizontalIcon
 } from "@heroicons/react/24/outline";
@@ -37,7 +36,7 @@ export function StepperWithContent({ activeStep, setActiveStep, setIsLastStep, s
                     </div>
                 </Step>
                 <Step>
-                    <UserIcon className="h-5 w-5" />
+                    <AdjustmentsHorizontalIcon className="h-5 w-5" />
                     <div className="absolute -bottom-[4.5rem] w-max text-center">
                         <Typography
                             variant="h6"
@@ -49,12 +48,12 @@ export function StepperWithContent({ activeStep, setActiveStep, setIsLastStep, s
                             color={activeStep === 1 ? "blue-gray" : "gray"}
                             className="font-normal"
                         >
-                            Fill up the form
+                            Review guide steps
                         </Typography>
                     </div>
                 </Step>
                 <Step>
-                    <AdjustmentsHorizontalIcon className="h-5 w-5" />
+                    <UserIcon className="h-5 w-5" />
                     <div className="absolute -bottom-[4.5rem] w-max text-center">
                         <Typography
                             variant="h6"
@@ -66,7 +65,7 @@ export function StepperWithContent({ activeStep, setActiveStep, setIsLastStep, s
                             color={activeStep === 2 ? "blue-gray" : "gray"}
                             className="font-normal"
                         >
-                            Review guide steps
+                            Fill up the form
                         </Typography>
                     </div>
                 </Step>

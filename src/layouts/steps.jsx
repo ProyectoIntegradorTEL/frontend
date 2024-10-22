@@ -5,8 +5,11 @@ import { StepperWithContent } from "../widgets/stepper"
 import { useState } from "react"
 import { Button } from "@material-tailwind/react"
 import { useNavigate } from "react-router-dom"
+import { useContext } from "react"
+import { TrialContext } from "../context"
 
 export function StepsLayout() {
+    const { user: { personalId, firstName, lastName, gender, birthDate, email, phone, isOn, isNewPatient } } = useContext(TrialContext);
     const [activeStep, setActiveStep] = useState(0);
     const [isFirstStep, setIsFirstStep] = useState(false);
     const [isLastStep, setIsLastStep] = useState(false);
@@ -21,10 +24,23 @@ export function StepsLayout() {
             }
         }))
         if (isLastStep) {
-            navigate("/") //Reemplazar con la ruta de la prueba
+            if (isNewPatient) {
+                if (personalId && firstName && lastName && gender && birthDate && email && phone) {
+                    navigate("/motor-test/report")
+                } else {
+                    alert("Please fill all the fields")
+                }
+            } else {
+                if (personalId) {
+                    navigate("/motor-test/report")
+                } else {
+                    alert("Please fill all the fields")
+                }
+            }
         }
 
     };
+
     const handlePrev = () => {
         !isFirstStep && setActiveStep((cur) => cur - 1);
         routes.filter(({ layout }) => layout === "step").map(({ pages }) => pages.map(({ path }, index) => {
@@ -33,7 +49,7 @@ export function StepsLayout() {
             }
         }))
         if (isFirstStep) {
-            navigate("/") //Reemplazar con la ruta de la prueba
+            navigate("/")
         }
 
     };
