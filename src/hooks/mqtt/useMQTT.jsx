@@ -59,7 +59,7 @@ export const useMQTT = (topic ) => {
     }
   };
 
-  return { client, messages, publishMessage,setMessages };
+  return { client, messages, publishMessage,setMessages  };
 };
 
 
