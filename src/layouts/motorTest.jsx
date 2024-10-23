@@ -1,24 +1,23 @@
-
 import { Route, Routes } from "react-router-dom";
 import { NavbarSimple } from "../widgets/layout";
 import routes from "@/routes";
 
-export function DashboardLayout() {
+export function MotorTestLayout() {
     return (
-        <div className="flex flex-col min-h-screen h-screen px-8">
+        <main className="flex flex-col min-h-screen h-screen px-8 pb-8">
             <NavbarSimple />
 
             <Routes>
                 {routes.map(
                     ({ layout, pages }) =>
-                        layout === "dashboard" &&
+                        layout === "motor-test" &&
                         pages.map(({ element, path }) => (
                             <Route key={path} path={path} element={element} />
                         ))
                 )}
             </Routes>
-        </div>
+        </main>
     )
 }
 
-export default DashboardLayout
+
