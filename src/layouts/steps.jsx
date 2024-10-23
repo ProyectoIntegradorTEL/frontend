@@ -28,7 +28,7 @@ export function StepsLayout() {
                 if (personalId && firstName && lastName && gender && birthDate && email && phone) {
                     navigate("/motor-test/report")
                 } else {
-                    alert("Please fill all the fields")
+                    alert("Please fill all the required fields")
                 }
             } else {
                 if (personalId) {
