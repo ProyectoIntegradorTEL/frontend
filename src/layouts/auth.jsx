@@ -4,7 +4,7 @@ import routes from "../routes";
 export function AuthLayout() {
 
     return (
-        <div className="relative min-h-screen w-full">
+        <div className="flex flex-col min-h-screen h-screen px-8">
             <Routes>
                 {routes.map(
                     ({ layout, pages }) =>
