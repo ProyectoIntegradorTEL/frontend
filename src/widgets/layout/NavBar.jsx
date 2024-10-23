@@ -6,8 +6,10 @@ import {
     IconButton,
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-
+import { Link } from "react-router-dom";
 function NavList() {
+
+
     return (
         <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
             <Typography
@@ -16,9 +18,9 @@ function NavList() {
                 color="blue-gray"
                 className="p-1 font-medium"
             >
-                <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+                <Link to={"/dashboard"}>
                     Dashboard
-                </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -26,9 +28,9 @@ function NavList() {
                 color="blue-gray"
                 className="p-1 font-medium"
             >
-                <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+                <Link to={"/history"}>
                     History
-                </a>
+                </Link>
             </Typography>
             <Typography
                 as="li"
@@ -36,9 +38,9 @@ function NavList() {
                 color="blue-gray"
                 className="p-1 font-medium"
             >
-                <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+                <Link to={"/guides"}>
                     Guides
-                </a>
+                </Link>
             </Typography>
         </ul>
     );
@@ -63,11 +65,12 @@ export function NavbarSimple() {
             <div className="flex items-center justify-between text-blue-gray-900">
                 <Typography
                     as="a"
-                    href="#"
                     variant="h6"
                     className="mr-4 cursor-pointer py-1.5"
                 >
-                    Health Sentinel
+                    <Link to={"/"}>
+                        Health Sentinel
+                    </Link>
                 </Typography>
                 <div className="hidden lg:block">
                     <NavList />
