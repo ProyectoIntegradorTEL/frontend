@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import mqtt from "mqtt";
 
+
+// Hook used to connect to a MQTT broker and subscribe to a topic based on server connection:
+// wss://broker.emqx.io:8084/mqtt based on MQTTX service
+
 export const useMQTT = (topic) => {
 
   const [client, setClient] = useState(null);

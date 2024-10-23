@@ -11,55 +11,74 @@ import {
 import Plot from "react-plotly.js";
 import EditableTextField from "@/widgets/textfields/customTextField";
 import { useMQTT } from "@/hooks";
+import {  ImagePlacehoderSkeleton } from "@/widgets/skeleton";
 
 export function Report() {
-  const [processedData, setProcessedData] = useState(null);
-  const [plotData, setPlotData] = useState(null);
+
+  /*--------------------------------------------------------------------*/
+
+  //MQTT configuration
 
   const topicReceiver = "sender/Device082621";
 
-  
   const topicTrigger = "trigger/Device082621";
 
   const { client, messages, setMessages } = useMQTT(topicReceiver);
 
-  const {client: trigger, publishMessage: triggerPublishMessage, } = useMQTT(topicTrigger);
+  const { client: trigger, publishMessage: triggerPublishMessage } =useMQTT(topicTrigger);
+
+  /*--------------------------------------------------------------------*/
+
+  //Manage graph data
+
+  const [processedData, setProcessedData] = useState(null); // Storages the processed data to plot
+
+  const [plotData, setPlotData] = useState(null); // Storages the specific data to plot
+
+  /*--------------------------------------------------------------------*/
+
+  //Manage fetching process status
+
+  const [status, setStatus] = useState("idle");
+
+
+  /*--------------------------------------------------------------------*/
+
+  // Effect to process the data received
 
   useEffect(() => {
-    // Verificar si el último mensaje es "finished"
-    if (messages.length > 0 && messages[messages.length - 1] === "finished") {
-      // Encontrar el índice del último "start" antes de "finished"
-      const startIndex = messages.lastIndexOf("start");
 
-      if (startIndex !== -1) {
-        // Obtener los mensajes entre "start" y "finished", excluyendo ambos
-        const dataMessages = messages.slice(
-          startIndex + 1,
-          messages.length - 1
-        );
+    // Check if the last message is a '.', indicating the end of the JSON object storage on a string
 
-        // Concatenar los mensajes para formar una cadena
-        const dataString = dataMessages.join("");
+    if (messages.length > 0 && messages[messages.length - 1] === ".") {
+    
+    
+      const dataMessages = messages.slice(0, messages.length - 1);
 
-        // Procesar la cadena (por ejemplo, parsear como JSON)
-        try {
-          const jsonData = JSON.parse(dataString);
-          console.log("JSON completo:", jsonData);
-          setProcessedData(jsonData);
-        } catch (error) {
-          console.error("Error al parsear el JSON:", error);
-          console.log("Cadena recibida:", dataString);
-        }
+      const dataString = dataMessages.join("");
 
-        // Limpiar los mensajes procesados para evitar reprocesarlos
-        setMessages((prevMessages) => prevMessages.slice(messages.length));
-      } else {
-        console.warn("No se encontró 'start' antes de 'finished'.");
+      // Convert to JSON the string recolected
+      try {
+        const jsonData = JSON.parse(dataString);
+        console.log("JSON completo:", jsonData);
+        setProcessedData(jsonData);
+      } catch (error) {
+        console.error("Error al parsear el JSON:", error);
+        console.log("Cadena recibida:", dataString);
+        setStatus("error");
       }
+
+      // Clean the messages array to avoid reprocessing the same data
+
+      setMessages((prevMessages) => prevMessages.slice(messages.length));
     }
   }, [messages]);
 
+
+  /*--------------------------------------------------------------------*/
+
   // Effect to prepare data for plotting
+
   useEffect(() => {
     if (processedData) {
       // Extract accelerometer and gyroscope data
@@ -93,37 +112,47 @@ export function Report() {
           z: zGyro,
         },
       });
+
+      setStatus("success");
     }
   }, [processedData]);
+
+  /*--------------------------------------------------------------------*/
+
 
   return (
     <main className="flex flex-row w-full h-full mt-8 justify-center items-start">
       {/*Initial report to consider motor test status*/}
       <Card className="flex flex-col justify-start items-center h-full w-2/3 p-2 ">
-        <header className="flex flex-row justify-start  items-center  w-full ">
+        <header className=" flex flex-row w-full  ">
           <Button
             size="sm"
-            className="mr-40"
+            
+             // Posiciona el botón a la izquierda
             onClick={() => {
+              triggerPublishMessage("start");
               
-              triggerPublishMessage("start")
+              setMessages([]);
+              setStatus("fetching");
+              setPlotData(null);
               console.log("Mensaje enviado: start");
-            }
-          }
+            }}
           >
-            Iniciar prueba
+            Start motor test
           </Button>
 
-          <Typography variant="h4" color="black">
+          <Typography variant="h4" color="black" className="mx-auto">
             MDS-UPDRS Motor test
           </Typography>
         </header>
 
-        {/* Mostrar la gráfica si plotData está disponible */}
+        {/* Plot data if it is available */}
         {plotData ? (
           <Plot
             data={[
-              // Datos del acelerómetro
+
+              // Acelerometer data
+
               {
                 x: plotData.accelerometer.timestamps,
                 y: plotData.accelerometer.x,
@@ -172,15 +201,15 @@ export function Report() {
               },
             ]}
             layout={{
-              title: "Datos del Acelerómetro y Giroscopio",
+              title: "Acelerometer and Gyroscope data",
               xaxis: {
-                title: "Tiempo (s)",
+                title: "Time (s)",
               },
               yaxis: {
-                title: "Aceleración (m/s²)",
+                title: "Aceleration (m/s²)",
               },
               yaxis2: {
-                title: "Velocidad Angular (rad/s)",
+                title: "Angular velocity (grades/s)",
                 overlaying: "y",
                 side: "right",
               },
@@ -193,63 +222,77 @@ export function Report() {
             style={{ width: "100%", height: "100%" }}
           />
         ) : (
-          <p>Esperando datos...</p>
+
+
+            <div className="flex flex-col h-full w-full ">
+
+              {/*Loading component*/}
+
+              <ImagePlacehoderSkeleton/>
+
+
+            </div>
+
+
         )}
       </Card>
 
       <Card className="flex flex-col justify-start items-center h-full w-1/3 ml-4 ">
-        {/* */}
+        {/*Summary section */}
 
         <section className="flex flex-col justify-start items-center w-full h-1/4 ">
           <Typography variant="h4" color="black">
-            Resumen
+            Summary 
           </Typography>
 
           <Button
             size="lg"
-            color="green"
-            loading={false}
+            color={ status === "idle" ? "gray" : status === "success" ? "green" : status === "fetching" ? "blue" : "red"}
+            loading={status === "fetching" ? true : false}
             className="w-2/3 m-auto"
           >
-            Cargando
+            {`Status: ${status}`}
           </Button>
         </section>
         {/* */}
 
         <section className="flex flex-col justify-evenly items-center w-full h-2/4 px-2">
+          <EditableTextField label="Name" text="Kevin Steven" onSave={{}} />
+          <EditableTextField label="Lastname" text="Nieto Curaca" onSave={{}} />
+          <EditableTextField label="Age" text="19" onSave={{}} />
           <EditableTextField
-            label="Nombre"
-            text="Kevin Steven"
+            label="User ID"
+            text="1114540734"
             onSave={{}}
           />
-          <EditableTextField
-            label="Apellido"
-            text="Nieto Curaca"
-            onSave={{}}
-          />
-          <EditableTextField label="Edad" text="19" onSave={{}} />
-          <EditableTextField label="ID de Usuario" text="1114540734" onSave={{}} />
-          <Select variant="outlined" label="Sexo" clas>
-            <Option>Masculino</Option>
-            <Option>Femenino</Option>
-          </Select>{" "}
-          <Select variant="outlined" label="Estado" clas>
+          <Select variant="outlined" label="Sex" clas>
+            <Option>Male</Option>
+            <Option>Female</Option>
+          </Select>
+          
+          <Select variant="outlined" label="User state" clas>
             <Option>On</Option>
             <Option>Off</Option>
           </Select>
+          <Select variant="outlined" label="Motor test" clas>
+            <Option>Taconeo</Option>
+            <Option>Zapateo</Option>
+          </Select>
         </section>
-        {/* */}
+
+
+        {/*Actions buttons */}
 
         <section className="w-full h-1/4 ">
           <div className="flex flex-row justify-evenly items-center w-full h-full">
-            <Button variant="outlined" className="w-24">
-              Reintentar
+            <Button variant="outlined" className="w-24 flex flex-col justify-center items-center">
+              Retry
             </Button>
-            <Button className="w-24 " variant="outlined">
-              Aceptar
+            <Button className="w-24 flex flex-col justify-center items-center " variant="outlined">
+              Accept
             </Button>
-            <Button variant="outlined" className="w-24">
-              Descartar
+            <Button variant="outlined" className="w-24 flex flex-col justify-center items-center">
+              Cancel
             </Button>
           </div>
         </section>
