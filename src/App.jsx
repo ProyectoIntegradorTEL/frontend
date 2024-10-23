@@ -1,6 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import { DashboardLayout, AuthLayout, HomepageLayout, StepsLayout } from "./layouts";
-import { Routes, Route } from "react-router-dom";
 import { DashboardLayout, AuthLayout, HomepageLayout } from "./layouts";
 import { SignIn } from "./pages/auth";
 import { SignUp } from "./pages/auth";
