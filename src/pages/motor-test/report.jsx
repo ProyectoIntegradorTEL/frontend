@@ -123,7 +123,7 @@ export function Report() {
         {
           date,
           duration,
-          jsonData: "json_test", //processedData, // Enviamos los datos procesados
+          jsonData: JSON.stringify(processedData), // Enviamos los datos procesados
           note,
           evaluationTypeId: selectedEvaluationTypeId,
           patientId: selectedPatientId,
@@ -316,17 +316,17 @@ export function Report() {
               </div>
 
               <div className="mb-4">
-                <label className="font-medium mb-2 block">Evaluation Type ID:</label>
+                <label className="font-medium mb-2 block">Select a evaluation type:</label>
                 <select
                   value={selectedEvaluationTypeId}
                   onChange={(e) => setSelectedEvaluationTypeId(e.target.value)}
                   className="w-full border rounded-lg p-2"
                   required
                   >
-                  <option value="">Select a evaluation type (1 - Zapateo | 2 - Taconeo)</option>
+                  <option value=""></option>
                   {evaluationTypeId.map((ev) => (
                     <option key={ev.id} value={ev.id}>
-                      {ev.id}
+                      {ev.name}
                     </option>
                   ))}
                 </select>

@@ -166,7 +166,7 @@ import {
                       color="blue-gray"
                       className="-mb-3 font-medium"
                     >
-                      Gender
+                      Sex
                     </Typography>
                     <Select
                       label="Pick your gender"
@@ -174,10 +174,10 @@ import {
                       onChange={(value) => setGender(value)}
                     >
                       <Option key={"Male"} value={"Male"}>
-                        Hombre
+                        Male
                       </Option>
                       <Option key={"Female"} value={"Female"}>
-                        Mujer
+                        Female
                       </Option>
                     </Select>
                   </div>
