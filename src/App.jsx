@@ -14,8 +14,6 @@ function App() {
       <Route path="motor-test/*" element={<MotorTestLayout/>} />
 
       <Route path="/step/*" element={<StepsLayout />} />
-      <Route path="/sign-in" element={<SignIn/>}></Route>
-      <Route path="/sign-up" element={<SignUp/>}></Route>
       
     </Routes>
   )

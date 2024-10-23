@@ -31,11 +31,7 @@ export function StepsLayout() {
                     alert("Please fill all the required fields")
                 }
             } else {
-                if (personalId) {
-                    navigate("/motor-test/report")
-                } else {
-                    alert("Please fill all the fields")
-                }
+                navigate("/motor-test/report")
             }
         }
 
