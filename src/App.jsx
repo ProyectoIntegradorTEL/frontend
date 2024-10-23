@@ -11,8 +11,6 @@ function App() {
       <Route path="/auth/*" element={<AuthLayout />} />
       <Route path="/*" element={<HomepageLayout />} />
       <Route path="/step/*" element={<StepsLayout />} />
-      <Route path="/sign-in" element={<SignIn/>}></Route>
-      <Route path="/sign-up" element={<SignUp/>}></Route>
       
     </Routes>
   )

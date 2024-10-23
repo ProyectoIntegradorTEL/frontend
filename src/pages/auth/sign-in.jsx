@@ -2,14 +2,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'js-cookie';  // Importamos la librería para gestionar cookies
+import { Typography } from '@material-tailwind/react';
 
-export function SignIn () {
+export function SignIn() {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
 
-  // para redireccionar
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -24,8 +25,11 @@ export function SignIn () {
       const response = await axios.post('http://localhost:8080/auth/login', formData);
 
       if (response.status === 200) {
+        const { token } = response.data;  // Suponiendo que el token viene en response.data.token
+        Cookies.set('authToken', token, { expires: 7 });  // Guardar token en cookies por 7 días
+
         alert('Logged in successfully!');
-        navigate('/dashboard');
+        navigate('/');
       }
     } catch (error) {
       console.error('Login failed:', error);
@@ -77,7 +81,7 @@ export function SignIn () {
           </button>
         </form>
         <div className="text-center">
-          <p className="text-sm text-gray-600">
+          <Typography className="text-sm text-gray-600">
             Don't have an account?{' '}
             <button
               onClick={() => navigate('/sign-up')}
@@ -85,7 +89,7 @@ export function SignIn () {
             >
               Register here
             </button>
-          </p>
+          </Typography>
         </div>
       </div>
     </div>
