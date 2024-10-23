@@ -5,7 +5,7 @@ import routes from "../routes";
 
 export function HomepageLayout() {
     return (
-        <div className="flex flex-col min-h-screen h-screen px-8">
+        <div className="w-full h-full">
             <NavbarSimple />
 
             <Routes>
