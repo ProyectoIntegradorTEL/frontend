@@ -1,20 +1,20 @@
 export const steps = [
     {
-        title: "Paso 1: Posición de Sentado",
-        description: "Asegúrese de que el usuario esté sentado en una silla con reposabrazos y revise que la rodilla esté en la posición adecuada.",
+        title: "Step 1: Sitting Position",
+        description: "Ensure the user is seated in a chair with armrests and check that the knee is in the correct position.",
     },
     {
-        title: "Paso 2: Verificación del Calzado",
-        description: "Verifique que el calzado del usuario cumpla con las especificaciones.",
+        title: "Step 2: Footwear Check",
+        description: "Verify that the user’s footwear meets the specifications.",
     },
     {
-        title: "Paso 3: Prueba de Taconeo",
-        description: "Para la prueba de taconeo, confirme que la vestimenta permita la correcta movilidad.",
+        title: "Step 3: Heel Tapping Test",
+        description: "For the heel tapping test, confirm that the clothing allows proper mobility.",
     },
     {
-        title: "Paso 4: Registro de Anomalías",
-        description: "Registre cualquier anomalía o factor externo que pueda influir en el resultado de la prueba.",
-    }
+        title: "Step 4: Recording Anomalies",
+        description: "Record any anomalies or external factors that may affect the test outcome.",
+    },
 ];
 
 export default steps;

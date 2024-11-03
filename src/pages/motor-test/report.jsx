@@ -117,7 +117,7 @@ export function Report() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("entra a tirar post")
+      console.log("patient ID: " + selectedPatientId)
       const response = await axios.post(
         "http://localhost:8080/evaluation", 
         {
@@ -164,6 +164,9 @@ export function Report() {
 
         {/* Plot data if it is available */}
         {plotData ? (
+
+
+          <div className="h-full w-full flex flex-col justify-center items-center m-20">
           <Plot
             data={[
               {
@@ -231,8 +234,11 @@ export function Report() {
               },
             }}
             useResizeHandler={true}
-            style={{ width: "100%", height: "300px" }} // Ajuste la altura del gráfico
+            style={{ width: "100%", height: "800px" }} // Ajuste la altura del gráfico
           />
+
+</div>
+
         ) : (
           <div className="flex flex-col h-full w-full ">
             {/*Loading component*/}
