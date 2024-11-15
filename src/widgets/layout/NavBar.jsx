@@ -42,6 +42,16 @@ function NavList() {
                     Guides
                 </Link>
             </Typography>
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-medium"
+            >
+                <Link to={"/patient"}>
+                    Patients
+                </Link>
+            </Typography>
         </ul>
     );
 }
@@ -64,7 +74,6 @@ export function NavbarSimple() {
         <Navbar className="mx-auto py-3">
             <div className="flex items-center justify-between text-blue-gray-900">
                 <Typography
-                    as="a"
                     variant="h6"
                     className="mr-4 cursor-pointer py-1.5"
                 >

@@ -7,7 +7,7 @@ export function Homepage() {
     const navigate = useNavigate();
     const backgroundImage = "https://i.pinimg.com/564x/ae/f6/17/aef6170679bdead47b720fd69615d286.jpg";
     return (
-        <div className="w-screen h-full bg-gray-50">
+        <div className="w-full h-full bg-gray-50">
             {/* Hero Section */}
             <div className="mt-2 relative w-full h-screen bg-cover bg-center flex flex-col items-center justify-center text-center">
                 <div

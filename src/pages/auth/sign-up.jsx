@@ -25,7 +25,7 @@ export function SignUp() {
 
       if (response.status === 201) {
         alert('User registered successfully!');
-        navigate('/sign-in'); 
+        navigate('/sign-in');
       }
     } catch (error) {
       console.error('Registration failed:', error);

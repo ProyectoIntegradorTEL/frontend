@@ -22,7 +22,7 @@ export function SignIn() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/auth/login', formData);
+      const response = await axios.post('http://localhost:8082/auth/login', formData);
 
       if (response.status === 200) {
         const { token } = response.data;  // Suponiendo que el token viene en response.data.token
