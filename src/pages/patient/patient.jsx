@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Button, Spinner, Typography } from "@material-tailwind/react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import apiClient from "@/services/apiClient";
 import { ErrorBlock } from "@/widgets/blocks";
 
 export function Patient() {
+    const navigate = useNavigate();
     const { id } = useParams();
 
     const [patient, setPatient] = useState(null);
@@ -158,7 +159,7 @@ export function Patient() {
                                     <span className="font-semibold">Evaluator email:</span>{" "}
                                     {evaluation.evaluator.email}
                                 </p>
-                                <Button className="my-2">
+                                <Button className="my-2" onClick={() => navigate(`/patient/evaluation/${evaluation.id}`)}>
                                     View Evaluation
                                 </Button>
                             </div>

@@ -28,12 +28,12 @@ export const PatientCard = ({ patient, onDelete }) => {
                 <p>Phone: {patient.phone}</p>
             </CardBody>
             <CardFooter className="flex justify-end p-4">
-                <Button
+                {onDelete && <Button
                     className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
                     onClick={handleDelete}
                 >
                     Delete
-                </Button>
+                </Button>}
             </CardFooter>
         </Card>
     );

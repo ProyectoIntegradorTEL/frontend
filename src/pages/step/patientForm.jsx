@@ -15,6 +15,7 @@ import { DateInputLabel, TextInputLabel } from "../../widgets/textInputs";
 import { TrialContext } from "../../context";
 import axios from "axios";
 import Cookies from "js-cookie"; // Asegúrate de instalar 'js-cookie'
+import apiClient from "@/services/apiClient";
 
 export function PatientForm() {
   const { setUser } = useContext(TrialContext);
@@ -64,8 +65,8 @@ export function PatientForm() {
     try {
       const token = Cookies.get("authToken"); // Obtén el token de las cookies
 
-      const response = await axios.post(
-        "http://localhost:8080/patient",
+      const response = await apiClient.post(
+        "/patient",
         {
           personalId,
           firstName,

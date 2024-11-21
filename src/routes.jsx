@@ -5,7 +5,7 @@ import { Homepage } from "./pages/home";
 import { Report } from "./pages/motor-test";
 import { GuideSteps, PatientForm } from "./pages/step";
 import { PatientList } from "./widgets/list";
-import { Patient } from "./pages/patient";
+import { Patient, PatientEvaluation } from "./pages/patient";
 
 export const routes = [
   {
@@ -116,6 +116,11 @@ export const routes = [
         name: "patient",
         path: "/:id",
         element: <Patient />,
+      },
+      {
+        name: "patient",
+        path: "/evaluation/:id",
+        element: <PatientEvaluation />,
       },
     ],
   },

@@ -11,12 +11,13 @@ import { useContext, useEffect, useState } from "react";
 import { TrialContext } from "../../context";
 import axios from "axios";
 import Cookies from "js-cookie"; // Asegúrate de instalar 'js-cookie'
+import apiClient from "@/services/apiClient";
 
 export function PatientForm() {
     const { setUser } = useContext(TrialContext);
     const [patients, setPatients] = useState([]);
     const [evaluationTypes, setEvaluationTypes] = useState([]);
-    
+
     // Nuevos estados para los campos requeridos
     const [selectedPatientId, setSelectedPatientId] = useState("");
     const [date, setDate] = useState("");
@@ -27,7 +28,7 @@ export function PatientForm() {
     useEffect(() => {
         const fetchPatients = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/patient");
+                const response = await apiClient.get("/patient");
                 setPatients(response.data);
             } catch (error) {
                 console.error("Error fetching patients:", error);
@@ -36,7 +37,7 @@ export function PatientForm() {
 
         const fetchEvaluationTypes = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/evaluation-types"); // Asegúrate de que esta URL sea correcta
+                const response = await apiClient.get("/evaluation-types")
                 setEvaluationTypes(response.data);
             } catch (error) {
                 console.error("Error fetching evaluation types:", error);
@@ -52,8 +53,8 @@ export function PatientForm() {
         try {
             const token = Cookies.get("authToken"); // Obtén el token de las cookies
 
-            const response = await axios.post(
-                "http://localhost:8080/evaluation", // Cambia la URL según tu API
+            const response = await apiClient.post(
+                "/evaluation", // Cambia la URL según tu API
                 {
                     date,
                     duration,
@@ -96,7 +97,7 @@ export function PatientForm() {
                                 ))}
                             </Select>
                         </div>
-                        
+
                         <div className="mb-4">
                             <Typography variant="small" color="blue-gray" className="font-medium mb-2">
                                 Date

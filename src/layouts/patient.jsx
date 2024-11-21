@@ -8,7 +8,7 @@ import { Typography } from "@material-tailwind/react";
 
 export function PatientLayout() {
     return (
-        <div className="container mx-auto pb-8">
+        <div className="container h-full mx-auto pb-8">
             <NavbarSimple />
 
             <div className="mt-8 mb-12">

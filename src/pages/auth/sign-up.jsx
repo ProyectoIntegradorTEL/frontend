@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import apiClient from '@/services/apiClient';
 
 export function SignUp() {
   const [formData, setFormData] = useState({
@@ -21,7 +22,7 @@ export function SignUp() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/auth/register', formData);
+      const response = await apiClient.post('/auth/register', formData);
 
       if (response.status === 201) {
         alert('User registered successfully!');
