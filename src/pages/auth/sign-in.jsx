@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';  // Importamos la librería para gestionar cookies
 import { Typography } from '@material-tailwind/react';
+import apiClient from '@/services/apiClient';
 
 export function SignIn() {
   const [formData, setFormData] = useState({
@@ -22,12 +23,12 @@ export function SignIn() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/auth/login', formData);
+      const response = await apiClient.post('/auth/login', formData);
 
       if (response.status === 200) {
         const { token } = response.data;  // Suponiendo que el token viene en response.data.token
         Cookies.set('authToken', token, { expires: 7 });  // Guardar token en cookies por 7 días
-
+        console.log("Token:", token);
         alert('Logged in successfully!');
         navigate('/');
       }

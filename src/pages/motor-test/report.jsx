@@ -11,6 +11,7 @@ import { useMQTT } from "@/hooks";
 import { ImagePlacehoderSkeleton } from "@/widgets/skeleton";
 import axios from "axios"; // Asegúrate de tener axios instalado
 import Cookies from "js-cookie"; // Asegúrate de instalar 'js-cookie'
+import apiClient from "@/services/apiClient";
 
 export function Report() {
   //MQTT configuration
@@ -38,7 +39,7 @@ export function Report() {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/patient");
+        const response = await apiClient.get("/patient");
         setPatients(response.data);
       } catch (error) {
         console.error("Error fetching patients:", error);
@@ -48,7 +49,7 @@ export function Report() {
     const fetchEvaluationTypes = async () => {
       console.log("fetchin ev types")
       try {
-        const response = await axios.get("http://localhost:8080/evaluation-types")
+        const response = await apiClient.get("/evaluation-types")
         console.log("response from evaluation types: " + response.data)
         setEvaluationTypeId(response.data)
       } catch (error) {
@@ -118,8 +119,8 @@ export function Report() {
     e.preventDefault();
     try {
       console.log("entra a tirar post")
-      const response = await axios.post(
-        "http://localhost:8080/evaluation", 
+      const response = await apiClient.post(
+        "/evaluation",
         {
           date,
           duration,
@@ -322,7 +323,7 @@ export function Report() {
                   onChange={(e) => setSelectedEvaluationTypeId(e.target.value)}
                   className="w-full border rounded-lg p-2"
                   required
-                  >
+                >
                   <option value="">Select a evaluation type (1 - Zapateo | 2 - Taconeo)</option>
                   {evaluationTypeId.map((ev) => (
                     <option key={ev.id} value={ev.id}>
