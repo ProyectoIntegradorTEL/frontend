@@ -9,15 +9,12 @@ import {
 import Plot from "react-plotly.js";
 import { useMQTT } from "@/hooks";
 import { ImagePlacehoderSkeleton } from "@/widgets/skeleton";
-import axios from "axios"; // Asegúrate de tener axios instalado
-import Cookies from "js-cookie"; // Asegúrate de instalar 'js-cookie'
 import apiClient from "@/services/apiClient";
+import StompService from "@/services/webSocketService";
 
 export function Report() {
   //MQTT configuration
-  const topicReceiver = "sender/Device082621";
   const topicTrigger = "trigger/Device082621";
-  const { client, messages, setMessages } = useMQTT(topicReceiver);
   const { client: trigger, publishMessage: triggerPublishMessage } = useMQTT(topicTrigger);
 
   //Manage graph data
@@ -40,6 +37,23 @@ export function Report() {
 
 
   useEffect(() => {
+
+    const service = new StompService();
+
+    service.connect("/ws-connect", () => {
+      console.log("Connect using vite proxy");
+      // Suscribe to reception topic
+
+
+      service.subscribe('/dataTopic', (data) => {
+
+        console.log("Data received: ", data);
+
+        setProcessedData(data);
+      });
+
+    });
+    
     const fetchPatients = async () => {
       try {
         const response = await apiClient.get("/patient");
@@ -64,29 +78,12 @@ export function Report() {
     fetchEvaluationTypes();
   }, []);
 
-  // Effect to process the data received
-  useEffect(() => {
-    if (messages.length > 0 && messages[messages.length - 1] === ".") {
-      const dataMessages = messages.slice(0, messages.length - 1);
-      const dataString = dataMessages.join("");
-      // Convert to JSON the string recolected
-      try {
-        const jsonData = JSON.parse(dataString);
-        console.log("JSON completo:", jsonData);
-        setProcessedData(jsonData);
-      } catch (error) {
-        console.error("Error al parsear el JSON:", error);
-        console.log("Cadena recibida:", dataString);
-        setStatus("error");
-      }
-      // Clean the messages array to avoid reprocessing the same data
-      setMessages((prevMessages) => prevMessages.slice(messages.length));
-    }
-  }, [messages]);
 
   // Effect to prepare data for plotting
   useEffect(() => {
     if (processedData) {
+
+      console.log("Data processed: ", processedData);
       const accelerometerData = processedData.readings.accelerometer;
       const gyroscopeData = processedData.readings.gyroscope;
 
@@ -122,18 +119,19 @@ export function Report() {
     e.preventDefault();
     try {
       // Crear evaluación
-      console.log("Creando evaluación...");
+      console.log("Creando evaluación...------------------");
       const response = await apiClient.post("/evaluation", {
         date,
         duration,
-        jsonData: "json_test", // Simulación de datos procesados
+        jsonData: processedData, // Simulación de datos procesados
         note,
         evaluationTypeId: localStorage.getItem("evaluation_type"),
         patientId: selectedPatientId,
         evaluatorId: evaluatorPersonalId
       });
 
-      if (response.status === 201) {
+      if (response.status > 199  && response.status < 300) {
+        console.log
         const evaluationId = response.data.id; // Suponiendo que el ID está en 'id'
         localStorage.setItem("evaluationId", evaluationId); // Guardar en localStorage
         alert("Evaluación creada con éxito!");
@@ -179,7 +177,6 @@ export function Report() {
             size="sm"
             onClick={() => {
               triggerPublishMessage("start");
-              setMessages([]);
               setStatus("fetching");
               setPlotData(null);
               console.log("Mensaje enviado: start");

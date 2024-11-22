@@ -1,13 +1,21 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+// Crear cliente Axios
 const apiClient = axios.create({
-    baseURL: 'http://localhost:8082/', // Reemplaza con tu URL base
-    timeout: 1000, // Establece el tiempo de espera en milisegundos
+    baseURL: 'http://localhost:8081/',
+    timeout: 1000, 
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + Cookies.get('authToken'), // Añade el token de autenticación a todas las peticiones
+    },
+});
+
+apiClient.interceptors.request.use((config) => {
+    const token = Cookies.get('authToken'); 
+    if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
     }
+    return config;
 });
 
 export default apiClient;
