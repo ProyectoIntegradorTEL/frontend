@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { useContext, useEffect, useState } from "react";
 import { TrialContext } from "../../context";
-import { Button, Card, Typography } from "@material-tailwind/react";
+import { Button, Card, Textarea, Typography } from "@material-tailwind/react";
 import Plot from "react-plotly.js";
 import { useMQTT } from "@/hooks";
 import { ImagePlacehoderSkeleton } from "@/widgets/skeleton";
@@ -201,7 +201,7 @@ export function PatientEvaluation() {
             {`Status: ${status}`}
           </Button>
 
-          <div className="mt-8 space-y-8">
+          <div className="mt-8 space-y-8 w-full px-4">
             <Typography variant="h5" color="black">
               Patient
             </Typography>
@@ -213,7 +213,7 @@ export function PatientEvaluation() {
               />
             )}
           </div>
-          <div className="mt-8 space-y-8">
+          <div className="mt-8 space-y-8 w-full px-4">
             <Typography variant="h5" color="black">
               Evaluator
             </Typography>
@@ -223,6 +223,20 @@ export function PatientEvaluation() {
                 evaluator={evaluation.evaluator}
               />
             )}
+          </div>
+          <div className="mt-8 space-y-8 w-full px-4">
+            <Typography variant="h5" color="black">
+              Date
+            </Typography>
+            <Typography>{evaluation?.date}</Typography>
+          </div>
+          <div className="mt-8 space-y-8 w-full px-4">
+            <Typography variant="h5" color="black">
+              Notes
+            </Typography>
+            {evaluation?.notes.map((note, index) => (
+              <Textarea key={index} value={note.comment} disabled />
+            ))}
           </div>
         </section>
       </Card>
