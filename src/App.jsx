@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { DashboardLayout, AuthLayout, HomepageLayout, StepsLayout, PatientLayout } from "./layouts";
 
 import { MotorTestLayout } from "./layouts";
+import EvaluatorLayout from "./layouts/evaluator";
 
 function App() {
 
@@ -13,7 +14,7 @@ function App() {
       <Route path="motor-test/*" element={<MotorTestLayout />} />
       <Route path="/patient/*" element={<PatientLayout />} />
       <Route path="/step/*" element={<StepsLayout />} />
-
+      <Route path="/evaluator/*" element={<EvaluatorLayout/>}/>
     </Routes>
   )
 }

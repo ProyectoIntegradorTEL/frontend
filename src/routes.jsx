@@ -4,8 +4,10 @@ import { Dashboard } from "./pages/dashboard";
 import { Homepage } from "./pages/home";
 import { Report } from "./pages/motor-test";
 import { GuideSteps, PatientForm } from "./pages/step";
-import { PatientList } from "./widgets/list";
+import { EvaluatorList, PatientList } from "./widgets/list";
 import { Patient, PatientEvaluation } from "./pages/patient";
+import GuideInitial from "./pages/step/guidesInitial";
+import CreateEvaluator from "./widgets/list/evaluatorCreate";
 
 export const routes = [
   {
@@ -85,10 +87,7 @@ export const routes = [
       {
         name: "guides",
         path: "/guides",
-        element:
-          <div className="w-full h-full flex flex-col py-8 items-center">
-            <Typography variant="h1">Guides</Typography>
-          </div>,
+        element: <GuideInitial />
       },
       {
         name: "guide",
@@ -123,6 +122,21 @@ export const routes = [
         element: <PatientEvaluation />,
       },
     ],
+  },
+  {
+    layout: "evaluator",
+    pages: [
+      {
+        name: "evaluatorList",
+        path: "/",
+        element: <EvaluatorList />,
+      },
+      {
+        name: "evaluatorCreate",
+        path: "/create",
+        element: <CreateEvaluator/>
+      }
+    ]
   },
 ];
 

@@ -59,7 +59,7 @@ export function PatientForm() {
                     date,
                     duration,
                     note,
-                    evaluationTypeId,
+                    evaluationTypeId: `${localStorage.getItem('evaluation_type')}`,
                     patientId: selectedPatientId,
                 }
             );
@@ -133,23 +133,6 @@ export function PatientForm() {
                                 placeholder="Notes about the test"
                                 className="border rounded p-2 w-full"
                             />
-                        </div>
-
-                        <div className="mb-4">
-                            <Typography variant="small" color="blue-gray" className="font-medium mb-2">
-                                Select Evaluation Type
-                            </Typography>
-                            <Select
-                                label="Select evaluation type"
-                                value={evaluationTypeId}
-                                onChange={(value) => setEvaluationTypeId(value)}
-                            >
-                                {evaluationTypes.map((type) => (
-                                    <Option key={type.id} value={type.id}>
-                                        {type.name} {/* Asegúrate de que la propiedad sea correcta */}
-                                    </Option>
-                                ))}
-                            </Select>
                         </div>
 
                         <Button className="mt-6" fullWidth color="blue" type="submit">
