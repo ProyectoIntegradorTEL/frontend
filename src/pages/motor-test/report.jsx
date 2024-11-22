@@ -119,18 +119,19 @@ export function Report() {
     e.preventDefault();
     try {
       // Crear evaluación
-      console.log("Creando evaluación...");
+      console.log("Creando evaluación...------------------");
       const response = await apiClient.post("/evaluation", {
         date,
         duration,
-        jsonData: "json_test", // Simulación de datos procesados
+        jsonData: processedData, // Simulación de datos procesados
         note,
         evaluationTypeId: localStorage.getItem("evaluation_type"),
         patientId: selectedPatientId,
         evaluatorId: evaluatorPersonalId
       });
 
-      if (response.status === 201) {
+      if (response.status > 199  && response.status < 300) {
+        console.log
         const evaluationId = response.data.id; // Suponiendo que el ID está en 'id'
         localStorage.setItem("evaluationId", evaluationId); // Guardar en localStorage
         alert("Evaluación creada con éxito!");
