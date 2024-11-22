@@ -6,15 +6,23 @@ import path from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
-    hmr: true, 
+    proxy: {
+      "/ws-connect": {
+        target: "ws://localhost:8081", // Cambiar a WebSocket puro
+        ws: true, // Habilitar WebSocket
+        changeOrigin: true,
+      },
+    },
+  },
+  define: {
+    global: {},
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'), // Asegúrate de que 'src' está en el mismo nivel que tu archivo de configuración
+      '@': path.resolve(__dirname, 'src'),
     },
   },
 });

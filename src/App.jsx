@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { DashboardLayout, AuthLayout, HomepageLayout, StepsLayout, PatientLayout } from "./layouts";
-import { SignIn } from "./pages/auth";
-import { SignUp } from "./pages/auth";
+
 import { MotorTestLayout } from "./layouts";
 
 function App() {
