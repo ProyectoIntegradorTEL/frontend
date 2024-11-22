@@ -18,8 +18,8 @@ function NavList() {
                 color="blue-gray"
                 className="p-1 font-medium"
             >
-                <Link to={"/dashboard"}>
-                    Dashboard
+                <Link to={"/auth/sign-in"}>
+                    Sign-in
                 </Link>
             </Typography>
             <Typography
@@ -28,8 +28,8 @@ function NavList() {
                 color="blue-gray"
                 className="p-1 font-medium"
             >
-                <Link to={"/history"}>
-                    History
+                <Link to={"/auth/sign-up"}>
+                    Sign-up
                 </Link>
             </Typography>
             <Typography
@@ -38,7 +38,7 @@ function NavList() {
                 color="blue-gray"
                 className="p-1 font-medium"
             >
-                <Link to={"/guides"}>
+                <Link to={"/step/guides"}>
                     Guides
                 </Link>
             </Typography>
