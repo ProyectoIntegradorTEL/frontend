@@ -85,7 +85,7 @@ export function SignIn() {
           <Typography className="text-sm text-gray-600">
             Don't have an account?{' '}
             <button
-              onClick={() => navigate('/sign-up')}
+              onClick={() => navigate('/auth/sign-up')}
               className="text-blue-500 hover:underline"
             >
               Register here

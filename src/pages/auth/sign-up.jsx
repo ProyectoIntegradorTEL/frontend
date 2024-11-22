@@ -96,7 +96,7 @@ export function SignUp() {
           <p className="text-sm text-gray-600">
             Already have an account?{' '}
             <button
-              onClick={() => navigate('/sign-in')}
+              onClick={() => navigate('/auth/sign-in')}
               className="text-blue-500 hover:underline"
             >
               Log In

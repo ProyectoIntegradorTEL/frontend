@@ -1,10 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 import routes from "../routes";
+import { NavbarSimple } from "@/widgets/layout";
 
 export function AuthLayout() {
 
     return (
         <div className="flex flex-col min-h-screen h-screen px-8">
+            <NavbarSimple />
+
             <Routes>
                 {routes.map(
                     ({ layout, pages }) =>
