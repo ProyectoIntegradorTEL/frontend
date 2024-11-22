@@ -35,6 +35,9 @@ export function Report() {
   const [duration, setDuration] = useState(0);
   const [note, setNote] = useState("");
   const [evaluationTypeId, setEvaluationTypeId] = useState([]);
+  const [evaluatorPersonalId, setEvaluatorPersonalId] = useState(""); // Nuevo campo para evaluator ID
+  const [evaluationCreated, setEvaluationCreated] = useState(false);
+
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -118,26 +121,53 @@ export function Report() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("entra a tirar post")
-      const response = await apiClient.post(
-        "/evaluation",
-        {
-          date,
-          duration,
-          jsonData: "json_test", //processedData, // Enviamos los datos procesados
-          note,
-          evaluationTypeId: selectedEvaluationTypeId,
-          patientId: selectedPatientId,
-        }
-      );
+      // Crear evaluación
+      console.log("Creando evaluación...");
+      const response = await apiClient.post("/evaluation", {
+        date,
+        duration,
+        jsonData: "json_test", // Simulación de datos procesados
+        note,
+        evaluationTypeId: localStorage.getItem("evaluation_type"),
+        patientId: selectedPatientId,
+        evaluatorId: evaluatorPersonalId
+      });
 
       if (response.status === 201) {
-        alert("Motor test data submitted successfully!");
-        // navigate("/"); // Redirige al home o a donde prefieras
+        const evaluationId = response.data.id; // Suponiendo que el ID está en 'id'
+        localStorage.setItem("evaluationId", evaluationId); // Guardar en localStorage
+        alert("Evaluación creada con éxito!");
+
+        setEvaluationCreated(true); // Permitir que se muestren las notas
+        console.log("Evaluación creada con ID:", evaluationId);
       }
     } catch (error) {
-      console.log(error.message)
-      console.error("Failed to submit motor test data:", error);
+      console.error("Error al crear la evaluación:", error);
+    }
+  };
+
+  const handleAddNote = async () => {
+    const evaluationId = localStorage.getItem("evaluationId");
+    if (!evaluationId) {
+      alert("No se encontró el ID de la evaluación. Por favor, crea una evaluación primero.");
+      return;
+    }
+
+    try {
+      // Crear nota
+      const noteResponse = await apiClient.post("/notes", {
+        note, // La nota ingresada
+        evaluationId, // ID de la evaluación creada
+        patientId: selectedPatientId,
+        evaluatorId: evaluatorPersonalId, // ID del evaluador
+      });
+
+      if (noteResponse.status === 201) {
+        alert("Nota agregada con éxito!");
+        setNote(""); // Limpiar la nota después de enviarla
+      }
+    } catch (error) {
+      console.error("Error al agregar la nota:", error);
     }
   };
 
@@ -261,85 +291,84 @@ export function Report() {
 
         {/* Patient Form Section */}
         <div className="w-full p-2">
-          <form
-            className="mt-8 mb-2 mx-auto w-80 max-w-screen-lg lg:w-1/2"
-            onSubmit={handleSubmit}
-          >
-            <div className="mb-1 flex flex-col gap-6">
-              <div className="mb-4">
-                <Typography variant="small" color="blue-gray" className="font-medium mb-2">
-                  Select Patient
-                </Typography>
-                <select
-                  value={selectedPatientId}
-                  onChange={(e) => setSelectedPatientId(e.target.value)}
-                  className="w-full border rounded-lg p-2"
-                  required
-                >
-                  <option value="">Select a patient</option>
-                  {patients.map((patient) => (
-                    <option key={patient.id} value={patient.personalId}>
-                      {patient.personalId}
-                    </option>
-                  ))}
-                </select>
-              </div>
+        <form onSubmit={handleSubmit} className="w-full max-w-lg">
+          <div className="mb-4">
+            <label className="block font-medium mb-2">Evaluator Personal ID</label>
+            <input
+              type="text"
+              value={evaluatorPersonalId}
+              onChange={(e) => setEvaluatorPersonalId(e.target.value)}
+              className="border rounded-lg p-2 w-full"
+              required
+            />
+          </div>
 
-              <div className="mb-4">
-                <label className="font-medium mb-2 block">Date:</label>
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  className="border rounded-lg p-2 w-full"
-                  required
-                />
-              </div>
+          <div className="mb-4">
+            <label className="block font-medium mb-2">Select Patient</label>
+            <select
+              value={selectedPatientId}
+              onChange={(e) => setSelectedPatientId(e.target.value)}
+              className="border rounded-lg p-2 w-full"
+              required
+            >
+              <option value="">Selecciona un paciente</option>
+              {patients.map((patient) => (
+                <option key={patient.id} value={patient.personalId}>
+                  {patient.personalId}
+                </option>
+              ))}
+            </select>
+          </div>
 
-              <div className="mb-4">
-                <label className="font-medium mb-2 block">Duration (s):</label>
-                <input
-                  type="number"
-                  value={duration}
-                  onChange={(e) => setDuration(e.target.value)}
-                  className="border rounded-lg p-2 w-full"
-                  required
-                />
-              </div>
+          <div className="mb-4">
+            <label className="block font-medium mb-2">Date</label>
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="border rounded-lg p-2 w-full"
+              required
+            />
+          </div>
 
-              <div className="mb-4">
-                <label className="font-medium mb-2 block">Note:</label>
-                <textarea
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
-                  className="border rounded-lg p-2 w-full"
-                />
-              </div>
+          <div className="mb-4">
+            <label className="block font-medium mb-2">Duration (s)</label>
+            <input
+              type="number"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              className="border rounded-lg p-2 w-full"
+              required
+            />
+          </div>
 
-              <div className="mb-4">
-                <label className="font-medium mb-2 block">Evaluation Type ID:</label>
-                <select
-                  value={selectedEvaluationTypeId}
-                  onChange={(e) => setSelectedEvaluationTypeId(e.target.value)}
-                  className="w-full border rounded-lg p-2"
-                  required
-                >
-                  <option value="">Select a evaluation type (1 - Zapateo | 2 - Taconeo)</option>
-                  {evaluationTypeId.map((ev) => (
-                    <option key={ev.id} value={ev.id}>
-                      {ev.id}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <Button type="submit" className="mt-4 w-full" color="green">
-              Submit
-            </Button>
-          </form>
+          <Button type="submit" className="w-full" color="green">
+            Crear Evaluación
+          </Button>
+        </form>
         </div>
       </Card>
+      {/* Formulario para agregar notas */}
+      {evaluationCreated && (
+        <Card className="flex flex-col justify-start items-center h-full w-1/3 ml-4 p-4">
+          <Typography variant="h5" color="black" className="mb-4">
+            Agregar Nota
+          </Typography>
+          <div className="mb-4 w-full">
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              className="border rounded-lg p-2 w-full"
+              placeholder="Escribe una nota"
+              rows={4}
+              required
+            />
+          </div>
+          <Button onClick={handleAddNote} className="w-full" color="blue">
+            Agregar Nota
+          </Button>
+        </Card>
+      )}
     </main>
   );
 }

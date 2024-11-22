@@ -48,6 +48,16 @@ function NavList() {
                 color="blue-gray"
                 className="p-1 font-medium"
             >
+                <Link to={"/evaluator"}>
+                    Evaluators
+                </Link>
+            </Typography>
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-medium"
+            >
                 <Link to={"/patient"}>
                     Patients
                 </Link>
