@@ -123,6 +123,31 @@ export function AnalyticsPage() {
         />
       </Card>
 
+      {/* Autocorrelation Analysis */}
+      <Card className="p-4">
+        <Typography variant="h4" className="mb-4">
+          Análisis de autocorrelación
+        </Typography>
+        <Plot
+          data={[
+            {
+              x: analyticsData.autocorrelation.lags,
+              y: analyticsData.autocorrelation.autocorr_normalized,
+              type: "scatter",
+              mode: "lines",
+              name: "Autocorrelación",
+            },
+          ]}
+          layout={{
+            title: "Autocorrelación de la señal",
+            xaxis: { title: "Lags" },
+            yaxis: { title: "Autocorrelación" },
+          }}
+          useResizeHandler={true}
+          style={{ width: "100%", height: "400px" }}
+        />
+      </Card>
+
       {/* Clinical Metrics */}
       <Card className="p-4">
         <Typography variant="h4" className="mb-4">
