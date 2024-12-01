@@ -130,7 +130,7 @@ export function AnalyticsPage() {
         </Typography>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="p-4 border rounded-lg bg-white">
-            <Typography variant="h6">Bradiquinesia</Typography>
+            <Typography variant="h6">Bradicinesia</Typography>
             <Typography>
               {(analyticsData.clinical_metrics.bradykinesia_score * 100).toFixed(2)}%
             </Typography>
