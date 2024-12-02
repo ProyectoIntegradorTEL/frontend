@@ -9,11 +9,12 @@ import axios from "axios"; // Asegúrate de tener axios instalado
 import Cookies from "js-cookie"; // Asegúrate de instalar 'js-cookie'
 import apiClient from "@/services/apiClient";
 import { exampleTestData } from "@/data/placeholder/test-data-placeholder";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { EvaluatorCard, PatientCard } from "@/widgets/card";
 
 export function PatientEvaluation() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   //Manage graph data
   const [processedData, setProcessedData] = useState(null);
@@ -157,7 +158,7 @@ export function PatientEvaluation() {
                 title: "Aceleration (m/s²)",
               },
               yaxis2: {
-                title: "Angular velocity (grades/s)",
+                title: "Angular velocity (degrees/s)",
                 overlaying: "y",
                 side: "right",
               },
@@ -175,6 +176,18 @@ export function PatientEvaluation() {
             <ImagePlacehoderSkeleton />
           </div>
         )}
+
+        <Button
+          color="blue"
+          size="lg"
+          onClick={() => {
+            console.log("Navegando a analytics con id:", id);
+            navigate(`/patient/evaluation/${id}/analytics`);  // Añade 'patient' al path
+          }}
+          className="mt-4"
+        >
+          Ver Análisis Detallado
+        </Button>
       </Card>
 
       <Card className="flex flex-col justify-start items-center h-full w-1/3 ml-4 overflow-auto">

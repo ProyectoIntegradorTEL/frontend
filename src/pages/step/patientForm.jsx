@@ -115,7 +115,7 @@ export function PatientForm() {
         </div>
         <div className="flex flex-col items-center mt-4">
           <Typography variant="h5" color="blue-gray">
-            Fill the following fields to complete the patient data.
+            Fill the following fields to complete the patient data. If the patient is already registered, click 'Next'.
           </Typography>
         </div>
         <form
@@ -123,26 +123,6 @@ export function PatientForm() {
           onSubmit={handleSubmit}
         >
           <div className="mb-1 flex flex-col gap-6">
-            <Tabs value={isNewPatient ? "New" : "Old"}>
-              <TabsHeader>
-                <Tab
-                  key={"New"}
-                  value={"New"}
-                  onClick={() => handleTabChange("New")}
-                >
-                  New patient
-                </Tab>
-                <Tab
-                  key={"Old"}
-                  value={"Old"}
-                  onClick={() => handleTabChange("Old")}
-                >
-                  Registered patient
-                </Tab>
-              </TabsHeader>
-            </Tabs>
-            {isNewPatient && (
-              <>
                 <TextInputLabel
                   label="Personal ID"
                   placeholder="Personal ID"
@@ -201,23 +181,6 @@ export function PatientForm() {
                   onValueChange={setPhone}
                 />
                 <div className="mb-1 flex flex-col gap-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="-mb-3 font-medium"
-                  >
-                    On/Off
-                  </Typography>
-                  <Tabs value={isOn ? "On" : "Off"}>
-                    <TabsHeader>
-                      <Tab key={"Off"} value={"Off"} onClick={() => setIsOn(false)}>
-                        Off
-                      </Tab>
-                      <Tab key={"On"} value={"On"} onClick={() => setIsOn(true)}>
-                        On
-                      </Tab>
-                    </TabsHeader>
-                  </Tabs>
                   <Button className="mt-6" fullWidth color="blue" type="submit">
                     Submit Patient Data
                   </Button>
@@ -227,14 +190,6 @@ export function PatientForm() {
                     </Typography>
                   )}
                 </div>
-              </>
-            )}
-            {registeredMessage && (
-              <Typography variant="small" color="green" className="mt-2">
-                {registeredMessage}
-              </Typography>
-            )}
-
           </div>
           <Checkbox
             label={

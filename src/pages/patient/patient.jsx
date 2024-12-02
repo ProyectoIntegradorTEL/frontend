@@ -34,6 +34,7 @@ export function Patient() {
         const fetchEvaluations = async () => {
             try {
                 if (patient && patient?.id) {
+                    console.log('buscando con ID: ' + patient.id)
                     const response = await apiClient.get(`/evaluation?patientId=${patient.id}`);
                     setEvaluations(response.data);
                     setEvaluationsLoading(false);
