@@ -28,12 +28,15 @@ export function Report() {
   const [patients, setPatients] = useState([]);
   const [selectedPatientId, setSelectedPatientId] = useState("");
   const [selectedEvaluationTypeId, setSelectedEvaluationTypeId] = useState("");
+  const [selectedEvaluatorId, setSelectedEvaluatorId] = useState(""); // Nuevo estado para seleccionar evaluador
+  const [evaluators, setEvaluators] = useState([]); // Nuevo estado para evaluadores
   const [date, setDate] = useState("");
   const [duration, setDuration] = useState(0);
   const [note, setNote] = useState("");
   const [evaluationTypeId, setEvaluationTypeId] = useState([]);
   const [evaluatorPersonalId, setEvaluatorPersonalId] = useState(""); // Nuevo campo para evaluator ID
   const [evaluationCreated, setEvaluationCreated] = useState(false);
+  const [notes, setNotes] = useState([]); // Historial de notas
 
 
   useEffect(() => {
@@ -63,6 +66,15 @@ export function Report() {
       }
     };
 
+    const fetchEvaluators = async () => {
+      try {
+        const response = await apiClient.get("/evaluator");
+        setEvaluators(response.data);
+      } catch (error) {
+        console.error("Error fetching evaluator:", error);
+      }
+    };
+
     const fetchEvaluationTypes = async () => {
       console.log("fetchin ev types")
       try {
@@ -76,6 +88,7 @@ export function Report() {
 
     fetchPatients();
     fetchEvaluationTypes();
+    fetchEvaluators();
   }, []);
 
 
@@ -123,11 +136,11 @@ export function Report() {
       const response = await apiClient.post("/evaluation", {
         date,
         duration,
-        jsonData: processedData, // Simulación de datos procesados
+        jsonData: 'JSON', // processedData, // Simulación de datos procesados
         note,
         evaluationTypeId: localStorage.getItem("evaluation_type"),
         patientId: selectedPatientId,
-        evaluatorId: evaluatorPersonalId
+        evaluatorId: selectedEvaluatorId
       });
 
       if (response.status > 199  && response.status < 300) {
@@ -152,17 +165,17 @@ export function Report() {
     }
 
     try {
-      // Crear nota
       const noteResponse = await apiClient.post("/notes", {
-        note, // La nota ingresada
-        evaluationId, // ID de la evaluación creada
+        note,
+        evaluationId,
         patientId: selectedPatientId,
-        evaluatorId: evaluatorPersonalId, // ID del evaluador
+        evaluatorId: selectedEvaluatorId,
       });
 
       if (noteResponse.status === 201) {
         alert("Nota agregada con éxito!");
-        setNote(""); // Limpiar la nota después de enviarla
+        setNotes((prevNotes) => [...prevNotes, note]); // Agregar al historial
+        setNote(""); // Limpiar el campo de texto
       }
     } catch (error) {
       console.error("Error al agregar la nota:", error);
@@ -289,15 +302,21 @@ export function Report() {
         {/* Patient Form Section */}
         <div className="w-full p-2">
         <form onSubmit={handleSubmit} className="w-full max-w-lg">
-          <div className="mb-4">
-            <label className="block font-medium mb-2">Evaluator Personal ID</label>
-            <input
-              type="text"
-              value={evaluatorPersonalId}
-              onChange={(e) => setEvaluatorPersonalId(e.target.value)}
+        <div className="mb-4">
+            <label className="block font-medium mb-2">Selecciona Evaluador</label>
+            <select
+              value={selectedEvaluatorId}
+              onChange={(e) => setSelectedEvaluatorId(e.target.value)}
               className="border rounded-lg p-2 w-full"
               required
-            />
+            >
+              <option value="">Selecciona un evaluador</option>
+              {evaluators.map((evaluator) => (
+                <option key={evaluator.personalId} value={evaluator.personalId}>
+                  {evaluator.personalId} | {evaluator.firstName} {evaluator.lastName}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="mb-4">
@@ -311,7 +330,7 @@ export function Report() {
               <option value="">Selecciona un paciente</option>
               {patients.map((patient) => (
                 <option key={patient.id} value={patient.personalId}>
-                  {patient.personalId}
+                  {patient.personalId} | {patient.firstName} {patient.lastName}
                 </option>
               ))}
             </select>
@@ -349,19 +368,27 @@ export function Report() {
       {evaluationCreated && (
         <Card className="flex flex-col justify-start items-center h-full w-1/3 ml-4 p-4">
           <Typography variant="h5" color="black" className="mb-4">
-            Agregar Nota
+            Historial de Notas
           </Typography>
           <div className="mb-4 w-full">
-            <textarea
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              className="border rounded-lg p-2 w-full"
-              placeholder="Escribe una nota"
-              rows={4}
-              required
-            />
+            {notes.length === 0 ? (
+              <Typography>No hay notas agregadas.</Typography>
+            ) : (
+              notes.map((note, index) => (
+                <div key={index} className="border-b py-2">
+                  {note}
+                </div>
+              ))
+            )}
           </div>
-          <Button onClick={handleAddNote} className="w-full" color="blue">
+          <textarea
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            className="border rounded-lg p-2 w-full"
+            placeholder="Escribe una nueva nota"
+            rows={4}
+          />
+          <Button onClick={handleAddNote} className="w-full mt-4" color="blue">
             Agregar Nota
           </Button>
         </Card>

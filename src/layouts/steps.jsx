@@ -24,15 +24,7 @@ export function StepsLayout() {
             }
         }))
         if (isLastStep) {
-            if (isNewPatient) {
-                if (personalId && firstName && lastName && gender && birthDate && email && phone) {
-                    navigate("/motor-test/report")
-                } else {
-                    alert("Please fill all the required fields")
-                }
-            } else {
-                navigate("/motor-test/report")
-            }
+            navigate("/motor-test/report")
         }
 
     };

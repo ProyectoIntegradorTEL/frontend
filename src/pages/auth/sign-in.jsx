@@ -26,9 +26,11 @@ export function SignIn() {
       const response = await apiClient.post('/auth/login', formData);
 
       if (response.status === 200) {
-        const { token } = response.data;  // Suponiendo que el token viene en response.data.token
+        const { role, token } = response.data;  // Suponiendo que el token viene en response.data.token
         Cookies.set('authToken', token, { expires: 7 });  // Guardar token en cookies por 7 días
+        Cookies.set('role', role, {expires: 7})
         console.log("Token:", token);
+        console.log("Role:", role);
         alert('Logged in successfully!');
         navigate('/');
       }

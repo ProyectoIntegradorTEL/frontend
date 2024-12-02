@@ -7,32 +7,31 @@ import {
 } from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 function NavList() {
 
+    const handleLogout = () => {
+        Cookies.remove('authToken');
+        Cookies.remove('role');
+    }
 
     return (
         <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+            
+            {Cookies.get('role') == 'ADMIN' ? 
             <Typography
-                as="li"
-                variant="small"
-                color="blue-gray"
-                className="p-1 font-medium"
-            >
-                <Link to={"/auth/sign-in"}>
-                    Sign-in
-                </Link>
-            </Typography>
-            <Typography
-                as="li"
-                variant="small"
-                color="blue-gray"
-                className="p-1 font-medium"
-            >
-                <Link to={"/auth/sign-up"}>
-                    Sign-up
-                </Link>
-            </Typography>
-            <Typography
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1 font-medium"
+        >
+            <Link to={"/auth/sign-up"}>
+                Sign-up
+            </Link>
+        </Typography>
+            : <></>}
+            
+            {Cookies.get('authToken') ? <Typography
                 as="li"
                 variant="small"
                 color="blue-gray"
@@ -41,7 +40,11 @@ function NavList() {
                 <Link to={"/step/guides"}>
                     Guides
                 </Link>
-            </Typography>
+            </Typography> : <></>}
+            
+            {Cookies.get('role') == 'ADMIN' 
+            
+            ?  
             <Typography
                 as="li"
                 variant="small"
@@ -52,16 +55,43 @@ function NavList() {
                     Evaluators
                 </Link>
             </Typography>
+            :<></>}
+            
+
+            {Cookies.get('authToken') ? <Typography
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1 font-medium"
+        >
+            <Link to={"/patient"}>
+                Patients
+            </Link>
+        </Typography> : <></>}
+
+        {Cookies.get('role') ? 
             <Typography
-                as="li"
-                variant="small"
-                color="blue-gray"
-                className="p-1 font-medium"
-            >
-                <Link to={"/patient"}>
-                    Patients
-                </Link>
-            </Typography>
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1 font-medium"
+        >
+            <Link onClick={handleLogout} to={"/auth/sign-in"}>
+                Log Out
+            </Link>
+        </Typography>
+            : <Typography
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1 font-medium"
+        >
+            <Link to={"/auth/sign-in"}>
+                Sign-in
+            </Link>
+        </Typography>}
+            
+            
         </ul>
     );
 }
