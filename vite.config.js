@@ -11,8 +11,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/ws-connect": {
-        target: "ws://localhost:8081", // Cambiar a WebSocket puro
-        ws: true, // Habilitar WebSocket
+        target: "ws://localhost:8081", 
+        ws: true, 
         changeOrigin: true,
       },
     },
