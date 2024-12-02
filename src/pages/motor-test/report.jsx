@@ -35,7 +35,6 @@ export function Report() {
   const [evaluatorPersonalId, setEvaluatorPersonalId] = useState(""); // Nuevo campo para evaluator ID
   const [evaluationCreated, setEvaluationCreated] = useState(false);
 
-
   useEffect(() => {
 
     const service = new StompService();
@@ -123,7 +122,7 @@ export function Report() {
       const response = await apiClient.post("/evaluation", {
         date,
         duration,
-        jsonData: processedData, // Simulación de datos procesados
+        jsonData: JSON.stringify(processedData), // Simulación de datos procesados
         note,
         evaluationTypeId: localStorage.getItem("evaluation_type"),
         patientId: selectedPatientId,
@@ -131,7 +130,6 @@ export function Report() {
       });
 
       if (response.status > 199  && response.status < 300) {
-        console.log
         const evaluationId = response.data.id; // Suponiendo que el ID está en 'id'
         localStorage.setItem("evaluationId", evaluationId); // Guardar en localStorage
         alert("Evaluación creada con éxito!");
